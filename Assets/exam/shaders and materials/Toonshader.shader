@@ -15,13 +15,13 @@ Shader "Custom/ToonShader"
         CGPROGRAM
         #pragma surface surf ToonRamp addshadow
 
-        // Properties
+
         sampler2D _MainTex;
         sampler2D _RampTex;
         float4 _Color;
         float _Glossiness;
 
-        // Custom Lighting Function
+
         float4 LightingToonRamp(SurfaceOutput s, fixed3 lightDir, fixed3 viewDir, fixed atten)
         {
             // Diffuse lighting calculation
@@ -29,12 +29,12 @@ Shader "Custom/ToonShader"
             float h = diff * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
             float3 ramp = tex2D(_RampTex, float2(h, 0.0)).rgb;
 
-            // Specular lighting calculation (using built-in specular calculation)
+
             float3 halfDir = normalize(lightDir + viewDir);
             float spec = pow(max(dot(s.Normal, halfDir), 0.0), _Glossiness * 128);
-            float3 specular = s.Specular * spec * atten;  // Using built-in s.Specular
+            float3 specular = s.Specular * spec * atten; 
 
-            // Final color output
+
             float4 c;
             c.rgb = (s.Albedo * ramp * _LightColor0.rgb + specular) * atten;
             c.a = s.Alpha;
@@ -46,15 +46,14 @@ Shader "Custom/ToonShader"
             float2 uv_MainTex;
         };
 
-        // Surface function for processing the material properties
+
         void surf(Input IN, inout SurfaceOutput o)
         {
-            // Use MainTex if available, otherwise use base color
             fixed4 tex = tex2D(_MainTex, IN.uv_MainTex);
             o.Albedo = tex.rgb * _Color.rgb;
 
-            // Handle transparency and glossiness
-            o.Specular = _Glossiness; // Use built-in specular
+            //transparency and glossiness
+            o.Specular = _Glossiness; 
             o.Alpha = tex.a * _Color.a;
         }
         ENDCG

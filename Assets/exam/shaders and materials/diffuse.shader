@@ -1,11 +1,11 @@
 Shader "Custom/CoinShader"
 {
     Properties {
-        _MainTex ("Base Texture", 2D) = "white" {}      // Diffuse texture
-        _Metallic ("Metallic", Range(0,1)) = 0.8        // Metallic property
-        _Smoothness ("Smoothness", Range(0,1)) = 0.5    // Smoothness for specular highlights
-        _Color ("Base Color", Color) = (1, 1, 0, 1)     // Base color for the coin
-        _BumpMap ("Normal Map", 2D) = "bump" {}         // Optional normal map
+        _MainTex ("Base Texture", 2D) = "white" {}
+        _Metallic ("Metallic", Range(0,1)) = 0.8
+        _Smoothness ("Smoothness", Range(0,1)) = 0.5   
+        _Color ("Base Color", Color) = (1, 1, 0, 1)  
+        _BumpMap ("Normal Map", 2D) = "bump" {}        
     }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -26,15 +26,15 @@ Shader "Custom/CoinShader"
         };
 
         void surf(Input IN, inout SurfaceOutputStandard o) {
-            // Base color from texture and property
+            //color from textures
             fixed4 texColor = tex2D(_MainTex, IN.uv_MainTex);
             o.Albedo = texColor.rgb * _Color.rgb;
 
-            // Metallic and smoothness values
+            //metallic and smoothness
             o.Metallic = _Metallic;
             o.Smoothness = _Smoothness;
 
-            // Normal map for surface details (handles missing texture gracefully)
+            //normal map
             o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
         }
         ENDCG
